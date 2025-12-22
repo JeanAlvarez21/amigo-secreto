@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amigo Secreto 🎄</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Snowfall Container -->
+    <div id="snow-container"></div>
+
+    <!-- Music Player Widget -->
+    <div class="music-player">
+        <img src="img.jpg" alt="Cover" class="album-art">
+        <div class="music-info">
+            <span id="music-status"><i class="fas fa-play"></i> Play</span>
+            <span id="song-name">It's Beginning to Look...</span>
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- VIEW: SETUP / ADMIN -->
+        <section id="setup-view" class="view active">
+            <header class="header">
+                <h1>🎅 Amigo Secreto</h1>
+                <p>Organiza tu sorteo navideño fácil y rápido.</p>
+            </header>
+
+            <div class="card glass-effect">
+                <div class="input-group">
+                    <input type="text" id="name-input" placeholder="Nombre del participante..."
+                        onkeypress="handleEnter(event)">
+                    <button id="add-btn" class="btn-primary"><i class="fas fa-plus"></i> Añadir</button>
+                </div>
+
+                <ul id="participants-list" class="list-group">
+                    <!-- Dynamic List -->
+                </ul>
+
+                <div class="actions">
+                    <button id="draw-btn" class="btn-cta" disabled>🎲 Realizar Sorteo</button>
+                    <button id="reset-btn" class="btn-secondary hidden">🔄 Reiniciar</button>
+                </div>
+            </div>
+
+            <!-- Results Section (Initially Hidden) -->
+            <div id="results-area" class="card glass-effect hidden" style="margin-top: 20px;">
+                <span>Para compartir los links con los participantes</span>
+                <h2>🎁 Links Generados</h2>
+                <p class="instruction">Envía a cada persona SU link privado. No los abras tú o arruinarás la sorpresa.
+                </p>
+                <ul id="links-list" class="list-group"></ul>
+            </div>
+        </section>
+
+        <!-- VIEW: REVEAL / PLAYER -->
+        <section id="reveal-view" class="view hidden">
+            <div class="gift-container">
+                <div class="gift-box" id="gift-box">
+                    <div class="lid">
+                        <div class="bow"></div>
+                    </div>
+                    <div class="box"></div>
+                </div>
+                <div class="message-container glass-effect">
+                    <h2 id="recipient-greeting">¡Hola! 🎄</h2>
+                    <p>Alguien te ha enviado un regalo secreto.</p>
+                    <button id="reveal-btn" class="btn-cta">🎁 Abrir Regalo</button>
+                </div>
+            </div>
+
+            <!-- Result Overlay -->
+            <div id="final-reveal" class="overlay hidden">
+                <div class="reveal-content glass-effect">
+                    <h1>🌟 Te tocó regalar a: 🌟</h1>
+                    <h2 id="match-name" class="big-reveal">---</h2>
+                    <p>¡Shhh! Es un secreto.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ERROR VIEW -->
+        <section id="error-view" class="view hidden">
+            <div class="card glass-effect error-card">
+                <h2>🚫 Ups...</h2>
+                <p>Este link parece inválido o roto.</p>
+                <a href="/" class="btn-secondary">Volver al Inicio</a>
+            </div>
+        </section>
+    </main>
+
+    <audio id="bg-music" loop>
+        <source src="https://example.com/jingle-bells.mp3" type="audio/mp3">
+        <!-- Placeholder for now, will add real music later -->
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

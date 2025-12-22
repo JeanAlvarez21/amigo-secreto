@@ -1,0 +1,474 @@
+:root {
+    --primary-red: #d42426;
+    --primary-green: #165b33;
+    --gold: #f8b229;
+    --snow-white: #f0f4f8;
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --font-heading: 'Mountains of Christmas', cursive;
+    --font-body: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    /* Premium Christmas Night Background */
+    background: radial-gradient(circle at 50% -20%, #1a2a6c, #b21f1f, #fdbb2d);
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    /* Let's try a deep red/green blend */
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    /* Fallback */
+    background: radial-gradient(circle at 50% 0%, #2c3e50, #000000);
+    /* Actually, a rich red for Christmas feels warmer */
+    background: radial-gradient(circle at 50% 30%, #5a0c13, #1a0204);
+
+    color: #333;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Glassmorphism Classes */
+.glass-effect {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    padding: 2rem;
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    z-index: 10;
+    position: relative;
+    padding: 20px 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    color: var(--snow-white);
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.header h1 {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: 700;
+}
+
+/* Input Group */
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: 2px solid #ddd;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: var(--primary-green);
+}
+
+/* Buttons */
+button {
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 600;
+    transition: transform 0.2s, background 0.3s;
+    border: none;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background: var(--primary-green);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+}
+
+.btn-cta {
+    background: var(--primary-red);
+    color: white;
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+    box-shadow: 0 4px 15px rgba(212, 36, 38, 0.4);
+}
+
+.btn-cta:disabled {
+    background: #ccc;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.btn-copy {
+    background: var(--gold);
+    color: #4a3b00;
+    padding: 5px 15px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    margin-left: auto;
+}
+
+.link-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-whatsapp {
+    background: #25D366;
+    color: white;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+
+.btn-whatsapp:hover {
+    transform: scale(1.1);
+}
+
+.btn-copy.copied {
+    background: #4cd137;
+    color: white;
+}
+
+/* List Items */
+.list-group {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.list-item {
+    background: white;
+    padding: 12px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.list-item .remove-btn {
+    color: #ff4757;
+    background: none;
+    font-size: 1.2rem;
+}
+
+/* Music Widget */
+.music-player {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 12px 25px;
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding-left: 10px;
+    /* Adjust padding for image */
+}
+
+.album-art {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    /* Clean state by default */
+}
+
+.music-player.playing .album-art {
+    animation: spin 5s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.music-player:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(2px);
+}
+
+.music-player.playing {
+    border-color: #d42426;
+    box-shadow: 0 0 15px rgba(212, 36, 38, 0.5);
+}
+
+.music-info i {
+    margin-right: 5px;
+}
+
+/* 3D Gift Box */
+.gift-container {
+    perspective: 1000px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+.gift-box {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    animation: float 3s ease-in-out infinite;
+}
+
+.gift-box:hover {
+    transform: scale(1.05) rotateY(10deg);
+}
+
+.gift-box.open {
+    animation: none;
+    transform: translateY(50px);
+}
+
+.gift-box.open .lid {
+    transform: translateY(-100px) rotateX(45deg);
+    opacity: 0;
+    transition: all 0.5s ease-out;
+}
+
+.gift-box.open .box {
+    opacity: 0;
+    transition: opacity 0.5s ease-out 0.3s;
+}
+
+/* Box Parts */
+.box {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #d42426, #b01b1d);
+    position: absolute;
+    bottom: 0;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.box::before {
+    /* Ribbon Vertical */
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 100%;
+    background: var(--gold);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.box::after {
+    /* Ribbon Horizontal */
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 30px;
+    background: var(--gold);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.lid {
+    width: 220px;
+    height: 50px;
+    background: #e6282b;
+    position: absolute;
+    top: -25px;
+    /* Half height overlap */
+    left: -10px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    background: linear-gradient(135deg, #e6282b, #c41e20);
+}
+
+.lid::before {
+    /* Ribbon on Lid */
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 100%;
+    background: var(--gold);
+}
+
+/* Bow updated to be inside Lid */
+.bow {
+    position: absolute;
+    top: -30px;
+    /* Adjusted since it's now inside the lid */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 40px;
+    z-index: 3;
+}
+
+.bow::before,
+.bow::after {
+    content: '';
+    position: absolute;
+    width: 40%;
+    height: 100%;
+    border-radius: 50% 50% 0 0;
+    background: var(--gold);
+    border: 2px solid #de9e22;
+}
+
+.bow::before {
+    left: 5px;
+    transform: rotate(-30deg);
+}
+
+.bow::after {
+    right: 5px;
+    transform: rotate(30deg);
+}
+
+/* Animations */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Overlay for Modal */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.5s;
+}
+
+.overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Snowflakes & Background Effects */
+#snow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    /* Let clicks pass through */
+    z-index: 1;
+    /* Behind main content but above background */
+}
+
+.snowflake {
+    position: absolute;
+    top: -20px;
+    color: white;
+    font-size: 1em;
+    opacity: 0.8;
+    user-select: none;
+    will-change: transform;
+    /* Performance optimization */
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(105vh) rotate(360deg);
+        /* Rotate for more realism */
+    }
+}
+
+/* Confetti */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ffec3d;
+    animation: confetti-fall 3s ease-out infinite;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
