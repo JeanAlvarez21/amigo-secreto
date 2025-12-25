@@ -84,23 +84,70 @@ document.addEventListener('DOMContentLoaded', () => {
     function performDraw() {
         if (participants.length < 3) return;
 
-        // Simple shuffle and match
-        let shuffled = [...participants];
-        // Fisher-Yates shuffle
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
+        // Algoritmo de emparejamiento aleatorio verdadero (Derangement)
+        // Garantiza: nadie se regala a sí mismo + asignación completamente aleatoria
 
-        // Validate no one has themselves
         let matches = [];
-        for (let i = 0; i < shuffled.length; i++) {
-            let giver = shuffled[i];
-            let receiver = shuffled[(i + 1) % shuffled.length];
-            matches.push({ giver, receiver });
+        let attempts = 0;
+        const maxAttempts = 1000; // Prevenir bucle infinito
+
+        while (attempts < maxAttempts) {
+            attempts++;
+            matches = [];
+
+            // Crear lista de receptores disponibles (copia mezclada)
+            let receivers = [...participants];
+
+            // Mezclar varias veces para más aleatoriedad
+            for (let round = 0; round < 3; round++) {
+                for (let i = receivers.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [receivers[i], receivers[j]] = [receivers[j], receivers[i]];
+                }
+            }
+
+            let valid = true;
+            let usedReceivers = new Set();
+
+            // Asignar aleatoriamente cada giver a un receiver disponible
+            for (let i = 0; i < participants.length; i++) {
+                const giver = participants[i];
+
+                // Buscar un receiver válido (no es el mismo giver, no está usado)
+                let receiverIndex = -1;
+                for (let j = 0; j < receivers.length; j++) {
+                    if (receivers[j] !== giver && !usedReceivers.has(receivers[j])) {
+                        receiverIndex = j;
+                        break;
+                    }
+                }
+
+                // Si no encontramos receptor válido, reintentar todo
+                if (receiverIndex === -1) {
+                    valid = false;
+                    break;
+                }
+
+                const receiver = receivers[receiverIndex];
+                usedReceivers.add(receiver);
+                receivers.splice(receiverIndex, 1);
+                matches.push({ giver, receiver });
+            }
+
+            // Si todos tienen asignación válida, salir del bucle
+            if (valid && matches.length === participants.length) {
+                console.log(`✅ Sorteo completado en ${attempts} intento(s)`);
+                break;
+            }
         }
 
-        saveMatches(matches); // Persist matches
+        // Verificación final: mezclar el orden de los matches para más aleatoriedad en la visualización
+        for (let i = matches.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [matches[i], matches[j]] = [matches[j], matches[i]];
+        }
+
+        saveMatches(matches);
         displayLinks(matches);
     }
 
