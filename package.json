@@ -6,10 +6,12 @@
     "node": "22.x"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "echo 'Build complete'"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
     "express": "^5.2.1"
   }
 }
+

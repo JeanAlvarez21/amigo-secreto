@@ -31,6 +31,8 @@ module.exports = async function handler(req, res) {
         ].filter(Boolean); // Filtrar keys undefined
 
         if (apiKeys.length === 0) {
+            console.error('❌ CRITICAL: No API keys found in environment');
+            console.error('Available env vars:', Object.keys(process.env).filter(k => k.includes('GEMINI')));
             return res.status(500).json({ error: 'No hay API keys configuradas' });
         }
 
