@@ -499,93 +499,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Gemini API Call con rotación de keys
+    // Gemini API Call via Secure Backend Proxy
     async function generateDescription(name, traits) {
-        // Lista de API Keys para rotar y evitar agotar tokens
-        const apiKeys = [
-            "AIzaSyBjOqzpekEJeKgVz2br0f8HGHS8pDuJTeY",
-            "AIzaSyC-zRbVQPkU0VqBy8WT1BSrEOPGOb_PLpw",
-            "AIzaSyAxjJYAuBExCOJCgucktw8JDdllXlOTc1s"
-        ];
-        // Seleccionar una key aleatoria
-        const apiKey = apiKeys[Math.floor(Math.random() * apiKeys.length)];
-        console.log("Usando API Key:", apiKey.substring(0, 15) + "...");
+        console.log("Conectando a API segura...");
 
-        const adjective = ["audaz", "único", "legendario", "memeable", "caótico", "creativo", "sarcastico"][Math.floor(Math.random() * 7)];
-
-        const prompt = `Actúa como un comediante de roast. Escribe una sola frase mordaz, sarcástica y pasivo-agresiva (máximo 20 palabras) para un certificado de broma.
-
-Contexto: En caso de usar fechas estamos en Navidad 2025.
-Persona: ${name}.
-Características: ${traits}.
-
-GLOSARIO (para que entiendas las expresiones):
-- "Migajero/a": Alguien que se arrastra por amor, acepta las "migajas" de atención.
-- "Mala copa": Persona que se pone agresiva o molesta cuando bebe alcohol.
-- "Intenso/a": Alguien que exagera todo, especialmente en relaciones.
-- "Belicoso/a": Persona que se pone agresiva o molesta cuando bebe alcohol.
-
-
-INSTRUCCIONES:
-- La frase DEBE empezar con "Por..."
-- Usa humor negro y picante. NADA de cursilerías.
-- Basa la frase en las características dadas.
-- Sorpréndeme con algo ${adjective}.`;
-
-        // Modelo exacto solicitado: gemini-2.5-flash (sin preview)
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-
-        console.log("Conectando a Gemini 2.5 Flash...");
-
-        // Simplificamos el body para que coincida con el SDK Python (solo contents)
-        const response = await fetch(url, {
+        const response = await fetch('/api/generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: prompt }]
-                }]
-            })
+            body: JSON.stringify({ name, traits })
         });
 
         if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Status: ${response.status}\nDetalle: ${errorText}`);
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `Error ${response.status}`);
         }
 
         const data = await response.json();
 
-
-
-        if (data.error) {
-            throw new Error(`API logic Error: ${data.error.message}`);
+        if (!data.description) {
+            throw new Error("La API no devolvió descripción");
         }
 
-        if (!data.candidates || data.candidates.length === 0) {
-            if (data.promptFeedback) {
-                // Incluir feedback de seguridad en el error
-                throw new Error(`Bloqueo de Seguridad: ${JSON.stringify(data.promptFeedback)}`);
-            }
-            throw new Error("La IA respondió vacía (sin candidatos).");
-        }
-
-        let rawText = data.candidates[0].content.parts[0].text.trim();
-
-        // Limpiar markdown (asteriscos)
-        rawText = rawText.replace(/\*\*/g, '').replace(/\*/g, '');
-
-        // Extraer solo la frase que empieza con "Por..."
-        const porMatch = rawText.match(/Por[^.!?]*[.!?]/i);
-        if (porMatch) {
-            rawText = porMatch[0];
-        }
-
-        // Si la respuesta es ridículamente corta, lanzamos error para investigar
-        if (rawText.length < 10) {
-            throw new Error(`Respuesta demasiado corta: "${rawText}".`);
-        }
-
-        return rawText;
+        return data.description;
     }
 
     // --- GENERADOR LOCAL AVANZADO (FALLBACK) ---
